@@ -17,7 +17,7 @@ public class StringGenerator
   private final static NumberFormat TEMP_FMT = new DecimalFormat("#0.0");
   private final static NumberFormat PRMSL_FMT = new DecimalFormat("##0.0000");
   private final static NumberFormat PRMSL_FMT_2 = new DecimalFormat("##0");
-  private final static NumberFormat PERCENT_FMT = new DecimalFormat("##0");
+  private final static NumberFormat PERCENT_FMT = new DecimalFormat("##0.0");
   private final static NumberFormat DIR_FMT = new DecimalFormat("##0");
   private final static NumberFormat SPEED_FMT = new DecimalFormat("#0.0");
 
@@ -152,6 +152,9 @@ public class StringGenerator
       nf = PRMSL_FMT_2;
     if (first.getTypeNunit().equals(XDRTypes.TEMPERATURE))
       nf = TEMP_FMT;
+    if (first.getTypeNunit().equals(XDRTypes.HUMIDITY))
+      nf = PERCENT_FMT;
+    // TODO More formats...
 //  System.out.println("XDR Format for [" + first.getTypeNunit() + "] is " + (nf == null?"":"not ") + "null");
     if (nf != null)
       xdr += (nf.format(first.getValue()) + ",");
@@ -171,6 +174,9 @@ public class StringGenerator
         nf = PRMSL_FMT_2;
       if (e.getTypeNunit().equals(XDRTypes.TEMPERATURE))
         nf = TEMP_FMT;
+      if (first.getTypeNunit().equals(XDRTypes.HUMIDITY))
+        nf = PERCENT_FMT;
+      // TODO More formats...
       xdr += ("," + e.getTypeNunit().type() + ",");
 //    System.out.println("XDR Format for [" + e.getTypeNunit() + "] is " + (nf == null?"":"not ") + "null");
       if (nf != null)

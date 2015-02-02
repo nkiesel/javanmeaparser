@@ -1931,6 +1931,12 @@ public class StringParsers
     rmc = parseRMC(str);
     try { System.out.println("-> RMC date:" + rmc.getRmcDate() + " (" + rmc.getRmcDate().getTime() + ")"); }
     catch (Exception ex) { System.out.println("Expected:" + ex.toString()); }
+    
+    str = "$IIRMC,062658,A,1111.464,S,14235.335,W,05.6,226,231110,10,E,A*0A";
+    rmc = parseRMC(str);
+    try { System.out.println("-> RMC date:" + rmc.getRmcDate() + " (" + rmc.getRmcDate().getTime() + ")"); }
+    catch (Exception ex) { System.out.println("Expected:" + ex.toString()); }
+    System.out.println("Pos:" + rmc.getGp().lat + "/" + rmc.getGp().lng);
 
     System.out.println("Done");
   }    
