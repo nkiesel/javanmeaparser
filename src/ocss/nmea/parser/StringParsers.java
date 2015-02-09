@@ -38,7 +38,8 @@ public class StringParsers
     String sa[] = data.substring(0, data.indexOf("*")).split(",");
     if ((sa.length - 1) % 4 != 0) // Mismatch
     {
-      throw new RuntimeException("XDH String invalid (" + sa.length + " element(s) found, expected a multiple of 4)");
+      System.out.println("XDR String invalid (" + sa.length + " element(s) found, expected a multiple of 4)");
+      return lxdr;
     }
     for (int i=1; i<sa.length; i+=4)
     {
@@ -72,11 +73,13 @@ public class StringParsers
       }
       if (!foundType)
       {
-        throw new RuntimeException("Unknown XDH type [" + type + "]");
+        System.out.println("Unknown XDR type [" + type + "], in [" + data + "]");
+        return lxdr;
       }
       if (!foundUnit)
       {
-        throw new RuntimeException("Invalid XDH unit [" + unit + "] for type [" + type + "]");        
+        System.out.println("Invalid XDR unit [" + unit + "] for type [" + type + "], in [" + data + "]");   
+        return lxdr;
       }
     }
     
@@ -1139,6 +1142,8 @@ public class StringParsers
     String s = str.trim();
     if (s.length() < 6 || s.indexOf("*") < 0)
       return null;
+    if (!validCheckSum(str))
+      return null;
     s = s.substring(0, s.indexOf("*"));
     /* Structure is 
      *         1      2 3        4 5         6 7     8     9      10    11
@@ -1938,6 +1943,32 @@ public class StringParsers
     catch (Exception ex) { System.out.println("Expected:" + ex.toString()); }
     System.out.println("Pos:" + rmc.getGp().lat + "/" + rmc.getGp().lng);
 
+    // A bad one
+    str = "$IIRMC,051811,A,3730.079,N,12228.853,W,,,070215,19.905,I,1.013,B,28.8,C,14.0,C,,,,,172.0,T,173.0,M,35.1,N,18.1,M*66";
+    rmc = parseRMC(str);
+    if (rmc != null)
+    {
+      try { System.out.println("-> RMC date:" + rmc.getRmcDate() + " (" + rmc.getRmcDate().getTime() + ")"); }
+      catch (Exception ex) { System.out.println("Expected:" + ex.toString()); }
+    }
+    else
+      System.out.println("Invalid string:" + str);
+    
+    str = "$$IIRMC,055549,A,3730.080,N,29.908,I,1.013,B,28.8,C,14.0,C,,,,,169.0,T,170.0,M,28.3,N,14.6,M*67";
+    rmc = parseRMC(str);
+    if (rmc != null)
+    {
+      try { System.out.println("-> RMC date:" + rmc.getRmcDate() + " (" + rmc.getRmcDate().getTime() + ")"); }
+      catch (Exception ex) { System.out.println("Expected:" + ex.toString()); }
+    }
+    else
+      System.out.println("Invalid string:" + str);
+    
+    str = "$RPMMB,29.9276,I,1.0133,B*LW,08200,N,000.0,N*59";
+    System.out.println("[" + str + "] is " + (validCheckSum(str)?"":"not ") + "valid.");
+    pressure = parseMMB(str);
+    System.out.println(" ==> " + pressure + " hPa");
+    
     System.out.println("Done");
   }    
 }
