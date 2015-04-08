@@ -112,7 +112,7 @@ AIS Message type 2:
     
     String[] dataElement = sentence.split(",");
     if (!dataElement[PREFIX_POS].equals(AIS_PREFIX))
-      throw new RuntimeException("Invalid AIS Prefix.");
+      throw new RuntimeException("Unmanaged AIS Prefix [" + dataElement[PREFIX_POS] + "].");
      
     if (!dataElement[NB_SENTENCES_POS].equals("1")) // More than 1 message: Not Managed
       return null; 
@@ -455,7 +455,7 @@ AIS Message type 2:
   
   public static void main(String[] args) throws Exception
   {
-    String dataFileName = "ais.txt"; // "nmea.dump.txt" , "ais.txt"
+    String dataFileName = "nils.nmea"; // "nmea.dump.txt" , "ais.txt"
     if (args.length > 0)
       dataFileName = args[0];
     
@@ -466,7 +466,7 @@ AIS Message type 2:
       line = br.readLine();
       if (line != null)
       {
-        if (!line.startsWith("#"))
+        if (!line.startsWith("#") && line.startsWith("!"))
         {
           try
           {

@@ -1,8 +1,8 @@
 package ocss.nmea.api;
 
-import coreutilities.Utilities;
-
 import java.util.List;
+
+import javax.swing.text.Utilities;
 
 /**
  * A Model. This is an abstract class to extend to implement your own data-source.
@@ -85,7 +85,7 @@ public abstract class NMEAReader extends Thread
 
   public void run()
   {
-    if (Utilities.thisClassVerbose(this.getClass())) // ocss.nmea.api.NMEAReader
+    if ("true".equals(System.getProperty("verbose", "false"))) // ocss.nmea.api.NMEAReader
       System.out.println(this.getClass().getName() + ":Reader Running");
     try { read(); }
     catch (Exception ex)
