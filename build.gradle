@@ -71,8 +71,12 @@ task copyResources(type: Copy) {
 jar.dependsOn(copyResources)
 
 task tellMeProxy (description: "Spits out the proxy settings.") << {
-  println "Accessing resources with proxy $proxyHost:$proxyPort"
-  println "UserProfile: " + System.getenv()['USERPROFILE']
+  try {
+    println "Accessing resources with proxy $proxyHost:$proxyPort"
+    println "UserProfile: " + System.getenv()['USERPROFILE']
+  } catch (Exception e) {
+    println "No proxy"
+  }
 }
 
 compileJava.dependsOn(tellMeProxy)
