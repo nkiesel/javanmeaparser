@@ -1,4 +1,5 @@
 apply plugin: 'java'
+compileJava.options.encoding = 'ISO-8859-1'
 apply plugin: 'maven'
 
 def userprofile = System.getenv()['USERPROFILE'] // On Windows...
