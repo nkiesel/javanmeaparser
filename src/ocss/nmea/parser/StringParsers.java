@@ -1571,9 +1571,20 @@ public class StringParsers
   {
     return durationToDate(duration, null);
   }
-  
+
+  /*
+   * Sample: "2006-05-05T17:35:48.000Z"
+   *          |    |  |  |  |  |  |
+   *          |    |  |  |  |  |  20
+   *          |    |  |  |  |  17
+   *          |    |  |  |  14
+   *          |    |  |  11
+   *          |    |  8
+   *          |    5
+   *          0
+   */
   public static long durationToDate(String duration, String tz)
-    throws RuntimeException
+          throws RuntimeException
   {
     String yyyy = duration.substring( 0,  4);
     String mm   = duration.substring( 5,  7);
@@ -1581,9 +1592,10 @@ public class StringParsers
     String hh   = duration.substring(11, 13);
     String mi   = duration.substring(14, 16);
     String ss   = duration.substring(17, 19);
-    
+    String ms   = duration.substring(20, 23);
+
     float utcOffset = 0F;
-    
+
     String trailer = duration.substring(19);
     if (trailer.indexOf("+") >= 0 ||
         trailer.indexOf("-") >= 0)
@@ -1607,9 +1619,17 @@ public class StringParsers
     Calendar calendar = Calendar.getInstance();
     if (utcOffset == 0f && tz != null)
       calendar.setTimeZone(TimeZone.getTimeZone(tz));
+    else
+      calendar.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
     try
     {
-      calendar.set(Integer.parseInt(yyyy), Integer.parseInt(mm)-1, Integer.parseInt(dd), Integer.parseInt(hh), Integer.parseInt(mi), Integer.parseInt(ss));
+      calendar.set(Integer.parseInt(yyyy),
+                   Integer.parseInt(mm)-1,
+                   Integer.parseInt(dd),
+                   Integer.parseInt(hh),
+                   Integer.parseInt(mi),
+                   Integer.parseInt(ss));
+      calendar.set(Calendar.MILLISECOND, Integer.parseInt(ms));
     }
     catch (NumberFormatException nfe)
     {

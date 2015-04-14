@@ -51,10 +51,11 @@ public class StringParsersTest
   @Test
   public void testDurationToDate()
   {
-    String str = "2006-05-05T17:35:48.000Z";
-    long ld = StringParsers.durationToDate(str);
-//  System.out.println(str + " => " + new Date(ld) + ", ld:" + ld);
-    assertTrue("Bad duration (" + Long.toString(ld / 1000) + ")", (ld / 1000) == 1146875748L);
+      String tz = null; // TimeZone.getDefault().getID();
+      String str = "2006-05-05T17:35:48.000Z";
+      long ld = StringParsers.durationToDate(str, tz);
+//    System.out.println(str + " => " + SDF2.format(new Date(ld)) + ", ld:" + ld + ", Tz:" + tz);
+      assertTrue("Bad duration (" + Long.toString(ld / 1000) + ") instead of 1146850548. Tz:" + tz, (ld / 1000) == 1146850548L);
   }
 
   /**
