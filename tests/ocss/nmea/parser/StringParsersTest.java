@@ -53,7 +53,7 @@ public class StringParsersTest
   {
     String str = "2006-05-05T17:35:48.000Z";
     long ld = StringParsers.durationToDate(str);
-//    System.out.println(str + " => " + new Date(ld) + ", ld:" + ld);
+//  System.out.println(str + " => " + new Date(ld) + ", ld:" + ld);
     assertTrue("Bad duration (" + Long.toString(ld / 1000) + ")", (ld / 1000) == 1146875748L);
   }
 
