@@ -5,7 +5,7 @@ apply plugin: 'maven'
 def userprofile = System.getenv()['USERPROFILE'] // On Windows...
 
 group = 'oliv.cool.stuff'
-version = '1.0'
+version = '3.0.1.5'
 
 ant.setproxy(proxyhost: "$proxyHost", proxyport: "$proxyPort") //, proxyuser="user", proxypassword="password") 
 
