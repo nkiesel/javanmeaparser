@@ -1571,7 +1571,7 @@ public class StringParsers
   {
     return durationToDate(duration, null);
   }
-
+  
   /*
    * Sample: "2006-05-05T17:35:48.000Z"
    *          |    |  |  |  |  |  |
@@ -1584,7 +1584,7 @@ public class StringParsers
    *          0
    */
   public static long durationToDate(String duration, String tz)
-          throws RuntimeException
+    throws RuntimeException
   {
     String yyyy = duration.substring( 0,  4);
     String mm   = duration.substring( 5,  7);
@@ -1593,9 +1593,9 @@ public class StringParsers
     String mi   = duration.substring(14, 16);
     String ss   = duration.substring(17, 19);
     String ms   = duration.substring(20, 23);
-
+    
     float utcOffset = 0F;
-
+    
     String trailer = duration.substring(19);
     if (trailer.indexOf("+") >= 0 ||
         trailer.indexOf("-") >= 0)
@@ -1623,11 +1623,11 @@ public class StringParsers
       calendar.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
     try
     {
-      calendar.set(Integer.parseInt(yyyy),
-                   Integer.parseInt(mm)-1,
-                   Integer.parseInt(dd),
-                   Integer.parseInt(hh),
-                   Integer.parseInt(mi),
+      calendar.set(Integer.parseInt(yyyy), 
+                   Integer.parseInt(mm)-1, 
+                   Integer.parseInt(dd), 
+                   Integer.parseInt(hh), 
+                   Integer.parseInt(mi), 
                    Integer.parseInt(ss));
       calendar.set(Calendar.MILLISECOND, Integer.parseInt(ms));
     }
@@ -1666,18 +1666,25 @@ public class StringParsers
     str = "2006-05-05T17:35:48.000Z";
     long ld = durationToDate(str);
     System.out.println(str + " => " + new Date(ld));
-    str = "2006-05-05T17:35:48Z";
-    ld = durationToDate(str);
-    System.out.println(str + " => " + new Date(ld));
-    str = "2006-05-05T17:35:48-10:00";
-    ld = durationToDate(str);
-    System.out.println(str + " => " + new Date(ld));
-    str = "2006-05-05T17:35:48+10:00";
-    ld = durationToDate(str);
-    System.out.println(str + " => " + new Date(ld));
-    str = "2006-05-05T17:35:48.000-09:30";
-    ld = durationToDate(str);
-    System.out.println(str + " => " + new Date(ld));
+    try
+    {
+      str = "2006-05-05T17:35:48Z";
+      ld = durationToDate(str);
+      System.out.println(str + " => " + new Date(ld));
+      str = "2006-05-05T17:35:48-10:00";
+      ld = durationToDate(str);
+      System.out.println(str + " => " + new Date(ld));
+      str = "2006-05-05T17:35:48+10:00";
+      ld = durationToDate(str);
+      System.out.println(str + " => " + new Date(ld));
+      str = "2006-05-05T17:35:48.000-09:30";
+      ld = durationToDate(str);
+      System.out.println(str + " => " + new Date(ld));
+    }
+    catch (Exception ex)
+    {
+      ex.printStackTrace();
+    }
     
     str = "$IIRMC,092551,A,1036.145,S,15621.845,W,04.8,317,,10,E,A*0D";
     RMC rmc = null;
@@ -1990,5 +1997,17 @@ public class StringParsers
     System.out.println(" ==> " + pressure + " hPa");
     
     System.out.println("Done");
+    
+    str = "$WSCMP,TWD,135,TWS,1.7,GUSTS,11.3,GUSTD,180,TWS_AVG2M,.4,TWD_AVG2M,74,GUSTS_10M,11.3,GUSTD_10M,180,HUM,46.67,TEMPC,24.31,RAIN,0,DAYLYRAIN,0,PRMSL,1010.2,BAT,4.2,LIGHT,2.07*00";
+    boolean valid = validCheckSum(str);
+    System.out.println("Chain is " + (valid?"":"not ") + "valid");
+    
+    str = "WSCMP,TWD,135,TWS,1.7,GUSTS,11.3,GUSTD,180,TWS_AVG2M,.4,TWD_AVG2M,74,GUSTS_10M,11.3,GUSTD_10M,180,HUM,46.67,TEMPC,24.31,RAIN,0,DAYLYRAIN,0,PRMSL,1010.2,BAT,4.2,LIGHT,2.07";
+    cs = StringParsers.calculateCheckSum(str);
+    cks = Integer.toString(cs, 16).toUpperCase();
+    if (cks.length() < 2)
+      cks = "0" + cks;
+    str += ("*" + cks);
+    System.out.println("With checksum: $" + str);
   }    
 }
