@@ -120,7 +120,7 @@ public class CustomSerialReader
       }
       try
       {
-        // Settings for B&G Hydra
+        // Settings for B&G Hydra, TackTick, NKE, most of the NMEA Stations.
         sp.setSerialPortParams(4800,
                                SerialPort.DATABITS_8,
                                SerialPort.STOPBITS_1, 
@@ -188,10 +188,10 @@ public class CustomSerialReader
             ex.printStackTrace();                  
           }
         }
-//        else
-//        {
-//          System.out.println("Stop Reading serial port.");
-//        }
+//      else
+//      {
+//        System.out.println("Stop Reading serial port.");
+//      }
       default:
         break;
     }
